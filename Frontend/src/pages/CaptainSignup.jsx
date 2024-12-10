@@ -1,5 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { CaptainDataContext } from '../context/CaptainContext';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const CaptainSignup = () => {
   const [firstname, setFirstname] = useState('');
@@ -11,12 +14,14 @@ const CaptainSignup = () => {
   const [plate, setPlate] = useState('');
   const [capacity, setCapacity] = useState('');
   const [vehicleType, setVehicleType] = useState('');
-  const [latitude, setLatitude] = useState('');
-  const [longitude, setLongitude] = useState('');
   const [userData, setUserdata] = useState({});
   const [error, setError] = useState('');
 
-  const submitHandler = (e) => {
+  const { captain, setCaptain } = useContext(CaptainDataContext)
+
+  const navigate = useNavigate()
+
+  const submitHandler = async (e) => {
     e.preventDefault();
 
     if (password !== confirmPassword) {
@@ -25,7 +30,8 @@ const CaptainSignup = () => {
     }
 
     setError('');
-    setUserdata({
+    
+    const captainData = {
       fullname: {
         firstname,
         lastname,
@@ -37,13 +43,18 @@ const CaptainSignup = () => {
         plate,
         capacity: parseInt(capacity, 10),
         vehicleType,
-      },
-      location: {
-        lat: parseFloat(latitude),
-        lng: parseFloat(longitude),
-      },
-    });
+      }
+    }
 
+    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/captains/register`, captainData)
+
+    if (response.status === 200) {
+      const data = response.data
+      setCaptain(data.captain)
+      localStorage.setItem('token', data.token)
+      navigate('/captain-login')
+    } 
+    
     setFirstname('');
     setLastname('');
     setEmail('');
@@ -53,8 +64,6 @@ const CaptainSignup = () => {
     setPlate('');
     setCapacity('');
     setVehicleType('');
-    setLatitude('');
-    setLongitude('');
   };
 
   return (
@@ -112,67 +121,65 @@ const CaptainSignup = () => {
             type="password"
             placeholder='confirm password'
           />
-          <h3 className='font-uberMedium text-base mb-2'>Enter Vehicle Color</h3>
-          <input
-            value={color}
-            onChange={(e) => setColor(e.target.value)}
-            className='bg-[#eeeeee] mb-5 rounded px-4 py-2 border w-full text-base placeholder:text-sm placeholder:font-uberMedium'
-            required
-            type="text"
-            placeholder='Vehicle color'
-          />
-          <h3 className='font-uberMedium text-base mb-2'>Enter Vehicle Plate Number</h3>
-          <input
-            value={plate}
-            onChange={(e) => setPlate(e.target.value)}
-            className='bg-[#eeeeee] mb-5 rounded px-4 py-2 border w-full text-base placeholder:text-sm placeholder:font-uberMedium'
-            required
-            type="text"
-            placeholder='Plate number'
-          />
-          <h3 className='font-uberMedium text-base mb-2'>Enter Vehicle Capacity</h3>
-          <input
-            value={capacity}
-            onChange={(e) => setCapacity(e.target.value)}
-            className='bg-[#eeeeee] mb-5 rounded px-4 py-2 border w-full text-base placeholder:text-sm placeholder:font-uberMedium'
-            required
-            type="number"
-            placeholder='Capacity'
-          />
-          <h3 className='font-uberMedium text-base mb-2'>Select Vehicle Type</h3>
-          <select
-            value={vehicleType}
-            onChange={(e) => setVehicleType(e.target.value)}
-            className='bg-[#eeeeee] mb-5 rounded px-4 py-2 border w-full text-base placeholder:text-sm placeholder:font-uberMedium'
-            required
-          >
-            <option value="" disabled>Select vehicle type</option>
-            <option value="car">Car</option>
-            <option value="motorcycle">Motorcycle</option>
-            <option value="auto">Auto</option>
-          </select>
-          <div>
-            <h3 className='font-uberMedium text-base mb-2'>Enter Current Location (Latitude)</h3>
-            <input
-              value={latitude}
-              onChange={(e) => setLatitude(e.target.value)}
-              className='bg-[#eeeeee] mb-5 rounded px-4 py-2 border w-full text-base placeholder:text-sm placeholder:font-uberMedium'
-              required
-              type="number"
-              placeholder='Latitude'
-            />
-            <h3 className='font-uberMedium text-base mb-2'>Enter Current Location (Longitude)</h3>
-            <input
-              value={longitude}
-              onChange={(e) => setLongitude(e.target.value)}
-              className='bg-[#eeeeee] mb-5 rounded px-4 py-2 border w-full text-base placeholder:text-sm placeholder:font-uberMedium'
-              required
-              type="number"
-              placeholder='Longitude'
-            />
+          <div className='grid grid-cols-2 gap-4'>
+            {/* Vehicle Color */}
+            <div>
+              <h3 className='font-uberMedium text-base mb-2'>Enter Vehicle Color</h3>
+              <input
+                value={color}
+                onChange={(e) => setColor(e.target.value)}
+                className='bg-[#eeeeee] mb-2 rounded px-4 py-2 border w-full text-base placeholder:text-sm placeholder:font-uberMedium'
+                required
+                type="text"
+                placeholder='Vehicle color'
+              />
+            </div>
+
+            {/* Vehicle Plate */}
+            <div>
+              <h3 className='font-uberMedium text-base mb-2'>Vehicle Plate Number</h3>
+              <input
+                value={plate}
+                onChange={(e) => setPlate(e.target.value)}
+                className='bg-[#eeeeee] mb-2 rounded px-4 py-2 border w-full text-base placeholder:text-sm placeholder:font-uberMedium'
+                required
+                type="text"
+                placeholder='Plate number'
+              />
+            </div>
+
+            {/* Vehicle Capacity */}
+            <div>
+              <h3 className='font-uberMedium text-base mb-2'>Vehicle Capacity</h3>
+              <input
+                value={capacity}
+                onChange={(e) => setCapacity(e.target.value)}
+                className='bg-[#eeeeee] mb-5 rounded px-4 py-2 border w-full text-base placeholder:text-sm placeholder:font-uberMedium'
+                required
+                type="number"
+                placeholder='Capacity'
+              />
+            </div>
+
+            {/* Vehicle Type */}
+            <div>
+              <h3 className='font-uberMedium text-base mb-2'>Select Vehicle Type</h3>
+              <select
+                value={vehicleType}
+                onChange={(e) => setVehicleType(e.target.value)}
+                className='bg-[#eeeeee] mb-5 rounded px-4 py-2 border w-full text-base placeholder:text-sm placeholder:font-uberMedium'
+                required
+              >
+                <option value="" disabled>Select vehicle type</option>
+                <option value="car">Car</option>
+                <option value="motorcycle">Motorcycle</option>
+                <option value="auto">Auto</option>
+              </select>
+            </div>
           </div>
+
           {error && <p className="text-red-600 font-uberMedium mb-3">{error}</p>}
-          <button className='bg-[#111] text-white mb-3 rounded px-4 py-2 w-full text-lg'>
+          <button className='bg-[#111] text-white mt-3 mb-3 rounded px-4 py-2 w-full text-lg'>
             Register as a Captain <i className="bi bi-arrow-right absolute right-10"></i>
           </button>
           <p className='text-center font-uberMedium pb-7 pl-1'>
@@ -182,7 +189,7 @@ const CaptainSignup = () => {
       </div>
       <div>
         <p className="pb-2 text-sm text-gray-600 text-center mt-4">
-          By proceeding, you agree to Uber's <a href="/terms" className="text-blue-600 underline">Terms of Service</a> and acknowledge you have read our <a href="/privacy" className="text-blue-600 underline">Privacy Policy</a>. 
+          By proceeding, you agree to Uber's <a href="/terms" className="text-blue-600 underline">Terms of Service</a> and acknowledge you have read our <a href="/privacy" className="text-blue-600 underline">Privacy Policy</a>.
         </p>
       </div>
     </div>
