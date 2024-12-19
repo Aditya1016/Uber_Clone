@@ -66,7 +66,7 @@ const UserSignup = () => {
         <img className='w-12 mb-8 ml-1 mt-1' src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png" alt="logo" />
         <form onSubmit={submitHandler}>
           <div className='flex flex-row justify-between gap-4'>
-            <div>
+            <div className='w-1/2'>
               <h3 className='font-uberMedium text-base mb-2'>Enter your First name</h3>
               <input
                 value={firstname}
@@ -77,7 +77,7 @@ const UserSignup = () => {
                 placeholder='First name'
               />
             </div>
-            <div>
+            <div className='w-1/2'>
               <h3 className='font-uberMedium text-base mb-2'>Enter your Last name</h3>
               <input
                 value={lastname}

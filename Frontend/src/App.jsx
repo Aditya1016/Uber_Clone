@@ -13,6 +13,7 @@ import UserLogout from './pages/UserLogout';
 import CaptainHome from './pages/CaptainHome';
 import CaptainProtectedWrapper from './pages/CaptainProtectedWrapper';
 import CaptainLogout from './pages/CaptainLogout';
+import 'remixicon/fonts/remixicon.css'
 
 const App = () => {
   return (
