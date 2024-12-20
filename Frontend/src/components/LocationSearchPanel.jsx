@@ -1,8 +1,6 @@
 import React from 'react';
 
 const LocationSearchPanel = (props) => {
-
-    console.log(props)
   // Updated location data with types
   const locations = [
     { name: "24B, Near Kapoor's Cafe, Sheryians Coding School, Bhopal", type: "default" },
