@@ -7,7 +7,7 @@ import LiveTracking from '../components/LiveTracking'
 
 const CaptainRiding = () => {
 
-    const [ finishRidePanel, setFinishRidePanel ] = useState(false)
+    const [ finishRidePanelOpen, setFinishRidePanelOpen ] = useState(false)
     const finishRidePanelRef = useRef(null)
     const location = useLocation()
     const rideData = location.state?.ride
@@ -15,7 +15,7 @@ const CaptainRiding = () => {
 
 
     useGSAP(function () {
-        if (finishRidePanel) {
+        if (finishRidePanelOpen) {
             gsap.to(finishRidePanelRef.current, {
                 transform: 'translateY(0)'
             })
@@ -24,7 +24,7 @@ const CaptainRiding = () => {
                 transform: 'translateY(100%)'
             })
         }
-    }, [ finishRidePanel ])
+    }, [ finishRidePanelOpen ])
 
 
     return (
@@ -39,7 +39,7 @@ const CaptainRiding = () => {
 
             <div className='h-1/5 p-6 flex items-center justify-between relative bg-yellow-400 pt-10'
                 onClick={() => {
-                    setFinishRidePanel(true)
+                    setFinishRidePanelOpen(true)
                 }}
             >
                 <h5 className='p-1 text-center w-[90%] absolute top-0' onClick={() => {
@@ -51,11 +51,12 @@ const CaptainRiding = () => {
             <div ref={finishRidePanelRef} className='fixed w-full z-[500] bottom-0 translate-y-full bg-white px-3 py-10 pt-12'>
                 <FinishRide
                     ride={rideData}
-                    setFinishRidePanel={setFinishRidePanel} />
+                    setFinishRidePanelOpen={setFinishRidePanelOpen} />
             </div>
 
-            <div className='h-screen fixed w-screen top-0 z-[-1]'>
-                <LiveTracking />
+            <div className='h-screen fixed w-screen z-[-1]'>
+                {/* <LiveTracking /> */}
+                <img className='h-full w-full object-cover' src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif" alt="" />
             </div>
 
         </div>

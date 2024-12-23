@@ -1,6 +1,4 @@
-
 import mongoose, { Schema, model } from 'mongoose';
-
 
 const rideSchema = new Schema({
     user: {
@@ -48,7 +46,6 @@ const rideSchema = new Schema({
     signature: {
         type: String,
     },
-
     otp: {
         type: String,
         select: false,
