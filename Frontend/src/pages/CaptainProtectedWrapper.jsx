@@ -24,8 +24,8 @@ const CaptainProtectedWrapper = ({ children }) => {
         },
       })
       .then((response) => {
-        setCaptain(response.data.captain); // Update context with captain data
-        setIsLoading(false); // Stop loading
+        setCaptain(response.data.captain); // Set captain data in context
+        setIsLoading(false); // Set loading to false
       })
       .catch((err) => {
         console.error('Error fetching profile:', err);

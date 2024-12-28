@@ -1,12 +1,11 @@
-
-import socketIo from 'socket.io';
-import { findByIdAndUpdate } from './models/user.model';
-import { findByIdAndUpdate as _findByIdAndUpdate } from './models/captain.model';
+import {Server} from 'socket.io';
+import { User } from './models/user.model.js';
+import { Captain } from './models/captain.model.js';
 
 let io;
 
 function initializeSocket(server) {
-    io = socketIo(server, {
+    io = new Server(server, {
         cors: {
             origin: '*',
             methods: [ 'GET', 'POST' ]
@@ -19,11 +18,12 @@ function initializeSocket(server) {
 
         socket.on('join', async (data) => {
             const { userId, userType } = data;
+            console.log(`User ${userId} joined as ${userType}`);
 
             if (userType === 'user') {
-                await findByIdAndUpdate(userId, { socketId: socket.id });
+                await User.findByIdAndUpdate(userId, { socketId: socket.id });
             } else if (userType === 'captain') {
-                await _findByIdAndUpdate(userId, { socketId: socket.id });
+                await Captain.findByIdAndUpdate(userId, { socketId: socket.id });
             }
         });
 
@@ -35,7 +35,7 @@ function initializeSocket(server) {
                 return socket.emit('error', { message: 'Invalid location data' });
             }
 
-            await _findByIdAndUpdate(userId, {
+            await Captain.findByIdAndUpdate(userId, {
                 location: {
                     ltd: location.ltd,
                     lng: location.lng
@@ -51,7 +51,7 @@ function initializeSocket(server) {
 
 const sendMessageToSocketId = (socketId, messageObject) => {
 
-console.log(messageObject);
+    console.log(`Sending message to ${socketId}:`);
 
     if (io) {
         io.to(socketId).emit(messageObject.event, messageObject.data);
@@ -60,4 +60,4 @@ console.log(messageObject);
     }
 }
 
-export default { initializeSocket, sendMessageToSocketId };
+export { initializeSocket, sendMessageToSocketId };

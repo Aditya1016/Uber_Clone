@@ -12,12 +12,12 @@ const CaptainLogin = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    const captain = {
+    const captainData = {
       email,
       password
     }
 
-    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/captains/login`, captain)
+    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/captains/login`, captainData)
 
     if (response.status === 200) {
       const data = response.data

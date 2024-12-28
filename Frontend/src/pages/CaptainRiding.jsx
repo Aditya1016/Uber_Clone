@@ -12,8 +12,6 @@ const CaptainRiding = () => {
     const location = useLocation()
     const rideData = location.state?.ride
 
-
-
     useGSAP(function () {
         if (finishRidePanelOpen) {
             gsap.to(finishRidePanelRef.current, {
@@ -31,10 +29,10 @@ const CaptainRiding = () => {
         <div className='h-screen relative flex flex-col justify-end'>
 
             <div className='fixed p-6 top-0 flex items-center justify-between w-screen'>
-                <img className='w-16' src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png" alt="" />
-                <Link to='/captain-home' className=' h-10 w-10 bg-white flex items-center justify-center rounded-full'>
+                {/* <img className='w-16' src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png" alt="" /> */}
+                {/* <Link to='/captain-home' className=' h-10 w-10 bg-white flex items-center justify-center rounded-full'>
                     <i className="text-lg font-medium ri-logout-box-r-line"></i>
-                </Link>
+                </Link> */}
             </div>
 
             <div className='h-1/5 p-6 flex items-center justify-between relative bg-yellow-400 pt-10'
@@ -55,8 +53,8 @@ const CaptainRiding = () => {
             </div>
 
             <div className='h-screen fixed w-screen z-[-1]'>
-                {/* <LiveTracking /> */}
-                <img className='h-full w-full object-cover' src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif" alt="" />
+                <LiveTracking />
+                {/* <img className='h-full w-full object-cover' src="https://miro.medium.com/v2/resize:fit:1400/0*gwMx05pqII5hbfmX.gif" alt="" /> */}
             </div>
 
         </div>

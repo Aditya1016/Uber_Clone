@@ -4,9 +4,9 @@ import {UserDataContext} from "../context/UserContext"
 import axios from 'axios'
 
 const UserLogin = () => {
-  const[email, setEmail] = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const[userData, setUserdata] = useState({})
+  const [userData, setUserdata] = useState({})
 
   const navigate = useNavigate()
 
@@ -14,15 +14,10 @@ const UserLogin = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    // setUserdata({
-    //   email,
-    //   password
-    // })
-
-    const userData = {
+    const userData = ({
       email,
       password
-    }
+    })
 
     const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, userData)
 
@@ -39,10 +34,6 @@ const UserLogin = () => {
     setEmail('')
     setPassword('')
   }
-
-  useEffect(() => {
-    console.log(userData);
-  }, [userData]);
 
   return (
     <div className='p-7 flex flex-col justify-between h-screen'>

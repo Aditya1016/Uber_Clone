@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {Captain} from '../models/captain.model.js';
 
 const fetchAddressCoordinates = async (address) => {
     const apiKey = process.env.GOOGLE_MAPS_API;
@@ -10,7 +11,8 @@ const fetchAddressCoordinates = async (address) => {
 
         if (data.status === 'OK') {
             const { lat, lng } = data.results[0].geometry.location;
-            return { lat, lng };
+            let ltd = lat;
+            return { ltd, lng };
         } else {
             throw new Error(`Geocoding API error: ${data.status}`);
         }
@@ -63,4 +65,22 @@ const fetchAutoCompleteSuggestions = async (address) => {
     }
 }
 
-export { fetchAddressCoordinates, fetchDistanceTime, fetchAutoCompleteSuggestions };
+const fetchCaptainsInTheVicinity = async (ltd, lng, radius) => {    
+    const captains = await Captain.find({
+        location: {
+            $geoWithin: {
+                $centerSphere: [[ltd, lng], radius / 6371]
+            }
+        },
+        // status: 'active'
+    });
+
+    return captains;
+}
+
+export { 
+    fetchAddressCoordinates, 
+    fetchDistanceTime, 
+    fetchAutoCompleteSuggestions,
+    fetchCaptainsInTheVicinity
+};

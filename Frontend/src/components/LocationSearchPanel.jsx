@@ -1,58 +1,29 @@
 import React from 'react';
 
-const LocationSearchPanel = (props) => {
-
-    console.log(props)
-  // Updated location data with types
-  const locations = [
-    { name: "24B, Near Kapoor's Cafe, Sheryians Coding School, Bhopal", type: "default" },
-    { name: "5th Avenue Mall, MG Road, Indore", type: "default" },
-    { name: "Indira Gandhi International Airport, New Delhi", type: "airport" },
-    { name: "Sunrise Towers, Jayanagar, Bengaluru", type: "default" },
-    { name: "12th Floor, TechHub Plaza, Hitech City, Hyderabad", type: "default" },
-    { name: "Bengaluru City Railway Station, Majestic, Bengaluru", type: "train" },
-  ];
-
-  const getIconClass = (type) => {
-    switch (type) {
-      case "airport":
-        return "ri-flight-takeoff-line";
-      case "train":
-        return "ri-train-line";
-      default:
-        return "ri-map-pin-fill";
+const LocationSearchPanel = ({ suggestions, setVehiclePanelOpen, setPanelOpen, setPickup, setDestination, activeField }) => {
+  const handleSuggestionClick = (suggestion) => {
+    if(activeField === 'pickup') {   
+      setPickup(suggestion.description);
+    } else if (activeField === 'destination') { 
+      setDestination(suggestion.description);
     }
-  };
-
+    // setVehiclePanelOpen(true);
+    // setPanelOpen(false);
+  }
   return (
-    <div className="flex flex-col gap-4">
-      {locations.map((location, index) => (
-        <div
-          onClick={() => {
-            props.setVehiclePanelOpen(true);
-            props.setPanelOpen(false);
-          }}
-          key={index}
-          className="p-2 flex items-center border-2 border-white active:border-black rounded-lg justify-start gap-3"
-        >
-          {/* Dynamic Icon */}
-          <div
-            className="bg-[#eee] rounded-full flex items-center justify-center"
-            style={{
-              height: "7vw",
-              width: "7vw",
-              maxHeight: "3rem",
-              maxWidth: "3rem",
-              minHeight: "2rem",
-              minWidth: "2rem",
-            }}
-          >
-            <i className={getIconClass(location.type)}></i>
+    <div className='mt-16 p-4'>
+      {suggestions.length > 0 ? (
+        suggestions.map((suggestion, index) => (
+          <div key={index} className='mt-5 p-2 border-b cursor-pointer flex items-center gap-3' onClick={() => handleSuggestionClick(suggestion)}>
+            <h2 className='bg-[#eee] rounded-full flex items-center justify-center p-1'><i className="ri-map-pin-2-fill"></i></h2>
+            <h4 className='font-uberMedium'>{suggestion.description}</h4>
           </div>
-          {/* Location Name */}
-          <h4 className="font-uberMedium">{location.name}</h4>
+        ))
+      ) : (
+        <div className='mt-20 p-2 text-center text-gray-500 font-uberMedium text-lg'>
+          Enter your location
         </div>
-      ))}
+      )}
     </div>
   );
 };

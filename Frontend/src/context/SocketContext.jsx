@@ -1,11 +1,11 @@
 import React, { createContext, useEffect } from 'react';
-import { io } from 'socket.io-client';
+import { io, Socket } from 'socket.io-client';
 
-export const SocketContext = createContext();
+export const SocketDataContext = createContext();
 
 const socket = io(`${import.meta.env.VITE_BASE_URL}`); 
 
-const SocketProvider = ({ children }) => {
+const SocketContext = ({ children }) => {
     useEffect(() => {
         socket.on('connect', () => {
             console.log('Connected to server');
@@ -18,10 +18,10 @@ const SocketProvider = ({ children }) => {
     }, []);
 
     return (
-        <SocketContext.Provider value={{ socket }}>
+        <SocketDataContext.Provider value={{ socket }}>
             {children}
-        </SocketContext.Provider>
+        </SocketDataContext.Provider>
     );
 };
 
-export default SocketProvider;
+export default SocketContext;

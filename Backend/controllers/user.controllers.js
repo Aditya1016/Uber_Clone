@@ -52,6 +52,12 @@ const loginUser = async (req, res) => {
 
     const {email, password} = req.body
 
+    if(!email || !password){
+        return res.status(400).json({
+            message: "Both email and password are required",
+        });
+    }
+
     const user = await User.findOne({email}).select("+password")
 
     if(!user){
@@ -72,7 +78,8 @@ const loginUser = async (req, res) => {
 }
 
 const getUserProfile = async (req, res) => {
-    res.status(200).json(req.user)
+    console.log(req.user)
+    res.status(200).json({ user: req.user })
 }
 
 const logoutUser = async (req, res, next) => {
