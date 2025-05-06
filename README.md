@@ -107,8 +107,3 @@ backend/
    ```bash
    npm run start
    ```
-
-## License 📜
-This project is licensed under Sheryians Coding School. See the `LICENSE` file for details.
-
----
